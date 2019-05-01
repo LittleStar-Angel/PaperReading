@@ -36,9 +36,12 @@ unsupercised data使用KL进行优化
 论文中的data augument strategies有以下几个方面
 > Image Classification
 >> [AutoAugument](https://arxiv.org/abs/1805.09501) 这篇文章用了强化学习的方式来挑选data augument的策略，reward是开发集上面的Acc, Policy是以下crop, resize 或者光照，颜色等数据增强方式，感觉主要是这类方式能够比较好的补充开发集相对训练集比较薄弱的一些数据分布
+
 >> [Cutout](https://arxiv.org/abs/1708.04552) 这个在image上面貌似是一个非常流行的正则手段，看论文看到了多次，这个正则手段非常简单，就是在图片中随机扣一个方块，如下图所示 <img src="./figures/data_augument4.jpg" width="400" />
+
 > Text Classification
 >> [BackTranslation](https://arxiv.org/pdf/1511.06709.pdf) 在NMT里面，算是最简单，粗暴有效的一个策略了。说到backtranslation，这篇文章的作者[Rico Sennrich](http://homepages.inf.ed.ac.uk/rsennric/)挺有意思的，在翻译里面的BPE和Backtranslation，均是他提出，都是非常简单，又非常有效的，挺让人佩服的。之前一直把back-translation和dual learninig搞得傻傻分不清，看了back-translation论文，发现back-translation最初使用单语语料仅仅是在decoder端使用，encoder是empty输入，并且单语训练梯度只更新decoder，单语训练和平行语料一起组batch训练，为了解决蹩脚问题，让一个翻译器先把单语语料粗翻一下，然后就可以当做平行语料来和正常平行语料一起使用
+
 >> TF-IDF based word replaceing
 
 文章还有一个亮点，为了解决无监督数据和有监督数据不匹配的问题，提出了Training  Signal Annealing(TSA的方法。出发点是，模型容量过大，有监督必然overfitting，模型容量小了又不能较好地利用大量的无监督data。这个做法的简单描述是，对于有监督样本预测的posterior，当正确probability>$\eta_t$时，把loss给mask掉；并且$\eta_t$随着训练步数的增加，从$\frac{1}{V}$逐渐增大到1，使得有监督信号不会一开始就dominate模型，过拟合，而对无监督数据照顾不care
