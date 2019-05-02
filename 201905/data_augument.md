@@ -65,7 +65,7 @@ unsupercised data使用KL进行优化
 
 <img src="./figures/data_augument_fig4.jpg" width="300">
 
-模型最终优化出一个数据增强的policy ${\Tau}$，有一个数据增强方式的序列组合而成，可以参考
+模型最终优化出一个数据增强的policy ${T}$，由一个数据增强方式的序列组合而成，可以参考
 
 <img src="./figures/data_augument_fig5.jpg" width="600">
 
@@ -73,7 +73,7 @@ unsupercised data使用KL进行优化
 
 <img src="./figures/data_augument_fig6.jpg" width="300">
 
-其中$M$用于优化模型参数$\theta$，$A$用于优化数据增强的policy$\Tau$，最终模型可以做的是的$D_M$和$\Tau(D_A)$的分布一致，即收敛，整个算法流程如图
+其中$M$用于优化模型参数$\theta$，$A$用于优化数据增强的policy$T$，最终模型可以做的是的$D_M$和$T(D_A)$的分布一致，即收敛，整个算法流程如图
 
 <img src="./figures/data_augument_fig7.jpg" width="400">
 
@@ -81,4 +81,4 @@ unsupercised data使用KL进行优化
 
 <img src="./figures/data_augument_fig8.png" width="300">
 
-文章作者说的使用的tree-Structed Parzen estimator(TPE)算法，使用的HyperOpt哭，这部分后面作者会开源[代码](https://github.com/kakaobrain/fast-autoaugment)
+文章作者说的使用的tree-Structed Parzen estimator(TPE)算法，使用的HyperOpt库，这部分后面作者会开源[代码](https://github.com/kakaobrain/fast-autoaugment)
