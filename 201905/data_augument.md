@@ -46,3 +46,39 @@ unsupercised data使用KL进行优化
 >> TF-IDF based word replaceing
 
 文章还有一个亮点，为了解决无监督数据和有监督数据不匹配的问题，提出了Training  Signal Annealing(TSA的方法。出发点是，模型容量过大，有监督必然overfitting，模型容量小了又不能较好地利用大量的无监督data。这个做法的简单描述是，对于有监督样本预测的posterior，当正确probability>$\eta_t$时，把loss给mask掉；并且$\eta_t$随着训练步数的增加，从$\frac{1}{V}$逐渐增大到1，使得有监督信号不会一开始就dominate模型，过拟合，而对无监督数据照顾不care
+
+# [Fast AutoAugment](https://arxiv.org/pdf/1905.00397.pdf)
+
+文章主要是在[AutoAugment](https://arxiv.org/pdf/1805.09501.pdf)基础上展开的工作，解决AutoAugment对计算量要求巨大的问题。下图是文章的一个效率对比
+
+<img src="./figures/data_augument_fig1.jpg" width="500">
+
+而且看最终效果也相比AutoAugument有比较明显的提升。文章的思路框架是，给定网络结构后，优化数据增强的policies，通过数据增强的方式，可以把训练集分布比较薄弱的数据给补充起来，从而增加在开发集的泛化效果。假设$O$表示一个augument的Operation，则数据增强方式可以表示为
+
+<img src="./figures/data_augument_fig2.jpg" width="400">
+
+每个sample是可能经过$N_{\tau}$次data augument的，这个过程可以表示为：
+
+<img src="./figures/data_augument_fig3.jpg" width="300">
+
+串起来的表示为:
+
+<img src="./figures/data_augument_fig4.jpg" width="300">
+
+模型最终优化出一个数据增强的policy ${\Tau}$，有一个数据增强方式的序列组合而成，可以参考
+
+<img src="./figures/data_augument_fig5.jpg" width="600">
+
+这里简单再描述这篇论文，或者所以auto augument论文的思路，都是希望通过数据增强的方式，使得$D_{train}$分布跟$D_{validation}$更加靠近，而得到在$D_{validation}$的性能提升。这篇文章的具体做法；首先将$D_{train}$分成K-fold，每个folder的数据都包括2个部分($M$和$A$)，模型参数为$\theta$，优化目标为
+
+<img src="./figures/data_augument_fig6.jpg" width="300">
+
+其中$M$用于优化模型参数$\theta$，$A$用于优化数据增强的policy$\Tau$，最终模型可以做的是的$D_M$和$\Tau(D_A)$的分布一致，即收敛，整个算法流程如图
+
+<img src="./figures/data_augument_fig7.jpg" width="400">
+
+文章的核心关键就在于如何优化算法第6行中的BayesOptim算法了，作者使用了Expected Improvement(EI)准则进行优化，具体表示如下
+
+<img src="./figures/data_augument_fig8.png" width="300">
+
+文章作者说的使用的tree-Structed Parzen estimator(TPE)算法，使用的HyperOpt哭，这部分后面作者会开源[代码](https://github.com/kakaobrain/fast-autoaugment)
