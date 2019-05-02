@@ -73,7 +73,7 @@ unsupercised data使用KL进行优化
 
 <img src="./figures/data_augument_fig6.jpg" width="300">
 
-其中$M$用于优化模型参数$\theta$，$A$用于优化数据增强的policy$T$，最终模型可以做的是的$D_M$和$T(D_A)$的分布一致，即收敛，整个算法流程如图
+其中$M$用于优化模型参数$\theta$，$A$用于优化数据增强的policy $T$，最终模型可以做的是的$D_M$和$T(D_A)$的分布一致，即收敛，整个算法流程如图
 
 <img src="./figures/data_augument_fig7.jpg" width="400">
 
