@@ -27,7 +27,7 @@
 
 <img src="./figures/nmt_fig3.jpg" width="400">
 
-其中$C$($c_i$)表示从encoder做attention得到的ctx信息，对于第i个token，模型有正向的$y_0$ \~ $y_{i-1}$的自回归信息，同时会对反向的$y"_0$ \~ $y"_{i-1}$ 编码的LSTM做attention，承接上面的公式，$z_i$的计算公式表示为
+其中$C$($c_i$)表示从encoder做attention得到的ctx信息，对于第i个token，模型有正向的$y_0$ \~ $y_{i-1}$的自回归信息，同时会对反向的$y_0’$ \~ $y_{i-1}’$ 编码的LSTM做attention，承接上面的公式，$z_i$的计算公式表示为
 
 <img src="./figures/nmt_fig4.jpg" width="250">
 
