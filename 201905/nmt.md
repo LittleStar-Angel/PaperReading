@@ -27,7 +27,7 @@
 
 <img src="./figures/nmt_fig3.jpg" width="400">
 
-其中$C$($c_i$)表示从encoder做attention得到的ctx信息，对于第i个token，模型有正向的$y_0~y_{i-1}$的自回归信息，同时会对反向的$y'_0~y'_{i-1}$编码的LSTM做attention，承接上面的公式，$\vec z_i$的计算公式表示为
+其中$C$($c_i$)表示从encoder做attention得到的ctx信息，对于第i个token，模型有正向的$y_0$ ~ $y_{i-1}$的自回归信息，同时会对反向的$y'_0$ ~ $y'_{i-1}$编码的LSTM做attention，承接上面的公式，$\vec z_i$的计算公式表示为
 
 <img src="./figures/nmt_fig4.jpg" width="250">
 
@@ -37,7 +37,7 @@
 
 <img src="./figures/nmt_fig6.jpg" width="500">
 
-其中比较关键的两个步骤就在于ExpandHypo()和UpdateHypo()两个函数，其中ExpandHypo()函数接受从左到右的nbest输入和从右到左的nbest输入，假设此时nbest=K，则共有$K*K$种路径组合，然后送入模型，得到$K*K*V$个路径分数，得到$B_{l_tmp}$和$B_{r_tmp}$，然后送入进行裁剪，具体算法表示为
+其中比较关键的两个步骤就在于ExpandHypo()和UpdateHypo()两个函数，其中ExpandHypo()函数接受从左到右的nbest输入和从右到左的nbest输入，假设此时nbest=K，则共有$K$\*$K$种路径组合，然后送入模型，得到$K$\*$K$\*$V$个路径分数，得到$B_{l_tmp}$和$B_{r_tmp}$，然后送入进行裁剪，具体算法表示为
 
 <img src="./figures/nmt_fig7.jpg" width="500">
 
