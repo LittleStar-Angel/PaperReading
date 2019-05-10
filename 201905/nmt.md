@@ -42,3 +42,13 @@
 <img src="./figures/nmt_fig7.jpg" width="500">
 
 可以看出，正向只裁剪出$K/2$的，反向也裁剪$K/2$的路径，两者拼到一起，正向和反向模型均能够得到$K$个路径。而UpdateHypo()跟普通beamsearch一样
+
+# [Subword Regularization: Improving Neural Network Translation Models with Multiple Subword Candidates](https://arxiv.org/pdf/1804.10959.pdf)
+Google一位老铁搞的sentencepiece，最近一直在想解决Deocder端的过拟合问题，做了一个子词+字的random组合，非常土，机缘巧合，居然看到18年居然有人已经做过此类事情，不过做得更加系统，这玩意就是小有名气的sentence piece.
+文章的出发点非常的make sence，BPE已经是我们非常常规的一种分词方法了，作者认为BPE本身的分词是多种可能的，但是我们仅仅取其一种分词法，实际上并不好，这种分词应该有多个候选，并且应该在训练过程中on-the-fly进行，而不是事先就定好。文章的一个重点工作在于，引入了small piece的unigram-langugage model来使得整个分词更加好。
+> 举个简单例子，中文句子“北京 天安门 广场”，可以有另外一种候选为 “北京 天安门 广 场”
+
+具体算法为
+<img src="./figures/nmt_fig8.jpg" width="500">
+
+其中的$loss_i$由一个训练的uniform language model来进行计算
