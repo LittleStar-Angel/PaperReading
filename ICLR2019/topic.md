@@ -12,7 +12,7 @@
 
 
 >提示：在github中无法正常显示公式，download repo到本地用markdown打开可以正常显示，也可以使用[GitHub with MathJax](https://chrome.google.com/webstore/detail/mathjax-plugin-for-github/ioemnmodlmafdkllaclgeombjnmnbima/related)插件来解决此问题
-
+[TOC]
 # Generative Model
 [Generating High Fidelity Images With Subscale Pixel Networks And Multidimensional Upscaling](https://openreview.net/forum?id=HylzTiC5Km
 )
