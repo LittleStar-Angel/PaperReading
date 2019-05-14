@@ -69,3 +69,6 @@ decoder端的分词不仅仅是BPE的argmax，而是多组后续 on-the-fly进�
 又是Facebook家做的ASR的一个工作，这个工作非常简单粗暴，就是用transformer来做ASR，一个非常重要的就是，不再向NMT那样使用Position Embedding，而是使用几层卷积代替position embedding，然后再累深层的transformer；实验结论是Encoder端需要多层transformer，Decoder端有6~8层就够了
 网络结构图为
 <img src="./figures/asr_fig3.jpg" width="500">
+
+# [Language Modeling with Deep Transformers](https://arxiv.org/pdf/1905.04226.pdf)
+使用深层次的self-attention来做language model建模的一篇文章，文章有个很有意思的说法是使用transformer来进行language model任务时，可以不需要position embedding，甚至convolution也不需要来进行relative信息的建模，这个结论我暂时表示有点疑惑，作者解释模型可能通过monotonic信息增益来确定position相关的信息，emmm
