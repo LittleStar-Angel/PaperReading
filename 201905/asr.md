@@ -56,7 +56,7 @@ Decoder端的token使用了很少比例的random sampling以此来缓解训练�
 #### label smoothing
 使用的是0.05的smooth factor
 #### word piece sampling
-decoder端的分词不仅仅是BPE的argmax，而是多组后续 on-the-fly进行，缓解过拟合，增加模型泛化能力
+decoder端的分词不仅仅是BPE的argmax，而是多组后选，这个多后选来自google 的[sentence piece](https://arxiv.org/pdf/1804.10959.pdf)方法 on-the-fly进行，缓解过拟合，增加模型泛化能力，我个人还是非常推崇这类正则方法的，至少是对条件概率连乘做了另外一种break方式，用这种方法解码的时候可能还能够通过解码出大单元来解决特定字不准确的问题
 ### BeamSearch的稳定性trick
 #### attention限制
 当前attention的peak离上一个attention peak 不能相隔太远
@@ -72,3 +72,27 @@ decoder端的分词不仅仅是BPE的argmax，而是多组后续 on-the-fly进�
 
 # [Language Modeling with Deep Transformers](https://arxiv.org/pdf/1905.04226.pdf)
 使用深层次的self-attention来做language model建模的一篇文章，文章有个很有意思的说法是使用transformer来进行language model任务时，可以不需要position embedding，甚至convolution也不需要来进行relative信息的建模，这个结论我暂时表示有点疑惑，作者解释模型可能通过monotonic信息增益来确定position相关的信息，emmm
+
+# [DYNAMIC EVALUATION OF TRANSFORMER LANGUAGE MODELS](https://arxiv.org/pdf/1904.08378.pdf)
+这篇文章在两个非常重要的工作中展开的[transformer-xl](https://arxiv.org/pdf/1901.02860.pdf) [dynamic evaludation](https://arxiv.org/pdf/1709.07432.pdf)
+
+首先说一下dynamic eval这个方法，其原理图为：
+
+<img src="./figures/asr_fig4.jpg" width="600">
+
+说一下大致的过程，就是把一个sequence给break成多个片段，我们一般更新模型参数都是整个sequence的loss average之后再更新模型参数，这个方法是，前一个片段计算loss之后直接把lstm的模型参数给更新了，然后拿着更新之后的模型参数，去跑下一个片段的forward过程
+
+然后我们再看一下transformer-xl这篇文章做的事情，其实就是一个Block RNN，重用历史，截断历史梯度，从而能够有很长的历史ctx信息
+
+<img src="./figures/asr_fig5.jpg" width="600">
+
+这篇文章做的工作就是把这两个language model中非常强大的方法融合再一起，在多个lm任务上取得不错的效果。
+
+# [RWTH ASR Systems for LibriSpeech: Hybrid vs Attention - w/o Data Augmentation](https://arxiv.org/pdf/1905.03072.pdf)
+在帧级建模上去取得了非常不错的效果，而且看github上面的repo，发现这是一个组织，里面有非常多的ASR相关的实验，很值得关注，并且还有一个专门的工具，其[文档](https://returnn.readthedocs.io/en/latest/)
+
+
+# [Generating Long Sequences with Sparse Transformers](https://arxiv.org/pdf/1904.10509.pdf)
+Open AI出的sparse transformer，其主要的优点在于，可以使用transformer建模非常长的历史，文章为了实现此功能，sparsr的选取还是非常有意思的，很类似TTS合成预测16bit 65536将其分成高8位256和低8位256预测方法；作者对于local历史不进行sparse的self-attention，对于很长的历史，变使用跳帧的方式稀疏做self-attention
+
+<img src="./figures/asr_fig6.jpg" width="600">

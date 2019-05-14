@@ -52,3 +52,10 @@ Google一位老铁搞的sentencepiece，最近一直在想解决Deocder端的过
 <img src="./figures/nmt_fig8.jpg" width="500">
 
 其中的$loss_i$由一个训练的uniform language model来进行计算
+
+# [MASS: Masked Sequence to Sequence Pre-training for Language Generation](https://arxiv.org/pdf/1905.02450.pdf)
+这篇文章可以看作是BERT-pretrain和GPT-pretrain的一个中间版本，其原理图表示为：
+
+<img src="./figures/nmt_fig9.jpg" width="600">
+
+当其Encoder中间扣掉1个时，类似BERT，当其Encoder全部扣掉，类似GPT了
