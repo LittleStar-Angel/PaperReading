@@ -96,3 +96,38 @@ decoder端的分词不仅仅是BPE的argmax，而是多组后选，这个多后�
 Open AI出的sparse transformer，其主要的优点在于，可以使用transformer建模非常长的历史，文章为了实现此功能，sparsr的选取还是非常有意思的，很类似TTS合成预测16bit 65536将其分成高8位256和低8位256预测方法；作者对于local历史不进行sparse的self-attention，对于很长的历史，变使用跳帧的方式稀疏做self-attention
 
 <img src="./figures/asr_fig6.jpg" width="600">
+
+# [Deep Residual Output Layers for Neural Language Generation](https://arxiv.org/pdf/1905.05513.pdf)
+一篇PMLP的论文，思路非常棒，跟我们CPC从bilinear到dnn交互非常类似。而且效果也很好。
+首先介绍一下这篇文章的出发点或者说期望解决的问题，
+
+> shallow fusion 问题，即在最后一层是一个线性交互
+
+> 过拟合问题
+
+一般我们在做分类的时候，最后一层的softmax，是用softmax weight和最终的hidden做一个linear；这里就有一个非常强的假设，我们网络已经把特征提取得非常牛逼，非常线性可分了，然后使用线性分类器就可以搞定了。用公式表示为
+
+<img src="./figures/asr_fig7.jpg" width="300">
+
+可以看到，这样的方式，学习到的$W_i^T$非常的不具备丰富表征能力，一个最简单的例子，对于$w_i$和$w_j$，两个模型参数老死不相往来，这个是有害的，所以最让人容易想到的一个改进方案是*weight tying*，这个方法在语言模型，机器翻译上面已经是一个标配做法，即使得target端的embedding和softmax weight进行共享，这样就可以变成
+
+<img src="./figures/asr_fig8.jpg" width="300">
+
+可以看到，这里仍然是点积来衡量相似度的，而一个更好的办法是bilinear，所以最后的公式用Bilinear又可以表示为
+
+<img src="./figures/asr_fig9.jpg" width="300">
+
+这里就跟我们CPC很类似的，这里的bilinear如果用非线性来进行交互，是可以得到很大的gain的，作者将这里的非线性
+交互拆解成让$E$和$h_t$分别做非线性，用$g_out(.)$和$g_in(.)$表示非线性，整个公式可以表示为
+
+<img src="./figures/asr_fig10.jpg" width="500">
+
+网络结构图为
+
+<img src="./figures/asr_fig11.jpg" width="600">
+
+根据上面的公式，作者先解决了shallow fusion问题，作者还提出另外一个解决过拟合问题的方法
+一种变体的dropout，作者仅仅在$E$这个分支这里引入了残差和dropout，在每一层都有dropout,而且不同之处在于，采样一次dropout mask，多层残差都用一个dropout mask，类似zoneout这种正则方式
+
+当然，作者这种方法在语言模型和NMT(transformer)中都取得了比较明显的提升，结论还是非常solid
+
